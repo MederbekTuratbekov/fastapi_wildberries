@@ -1,0 +1,122 @@
+from pydantic import BaseModel, EmailStr
+from datetime import datetime
+from .models import STATUS_CHOICES
+from typing import List, Optional
+
+
+class UserProfileLoginSchema(BaseModel):
+    username: str
+    password: str
+
+class UserProfileSchema(BaseModel):
+    id: int
+    first_name: str
+    lastname: str
+    username: str
+    email: EmailStr
+    age: int | None = None
+    phone_number: str | None = None
+    password: str
+    created_date: datetime
+    status: STATUS_CHOICES
+
+    class Config:
+        from_attributes = True
+
+class UserProfileCreateSchema(BaseModel):
+    first_name: str
+    lastname: str
+    username: str
+    email: EmailStr
+    age: int | None = None
+    phone_number: str | None = None
+    password: str
+    status: STATUS_CHOICES
+
+    class Config:
+        from_attributes = True
+
+# ------------------------------------------------------
+
+class CategorySchema(BaseModel):
+    id: int
+    category_name: str
+
+    class Config:
+        from_attributes = True
+
+# ------------------------------------------------------
+
+class ProductGreateSchema(BaseModel):
+    category_id: int
+    product_name: str
+    owner_id: int
+    article_number: int
+    description: str
+    product_type: bool
+    product_video: Optional[str]
+    price: float
+
+    class Config:
+        from_attributes = True
+
+class ProductListSchema(BaseModel):
+    id: int
+    category_id: int
+    product_name: str
+    owner_id: int
+    article_number: int
+    description: str
+    product_type: bool
+    product_video: Optional[str]
+    price: float
+    created_date: datetime
+
+    class Config:
+        from_attributes = True
+
+# ------------------------------------------------------
+
+class ReviewCreateSchema(BaseModel):
+    author_id: int
+    product_id: int
+    comment: str
+    stars: int
+
+    class Config:
+        from_attributes = True
+
+class ReviewGetSchema(BaseModel):
+    id: int
+    author_id: int
+    product_id: int
+    comment: Optional[str]
+    stars: Optional[int]
+    created_date: datetime
+
+    class Config:
+        from_attributes = True
+
+# ------------------------------------------------------
+
+class CartItemSchema(BaseModel):
+    id: int
+    product_id: int
+    quantity: int = None
+
+    class Config:
+        from_attributes = True
+
+class CartSchema(BaseModel):
+    id: int
+    user_id: int
+    items: List[CartItemSchema] = []
+
+    class Config:
+        from_attributes = True
+
+class CartCreateSchema(BaseModel):
+    product_id: int
+
+    class Config:
+        from_attributes = True
