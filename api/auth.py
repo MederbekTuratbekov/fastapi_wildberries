@@ -52,7 +52,7 @@ async def auth_register(user: UserProfileCreateSchema  = Depends(), db: Session 
     new_cart = Cart(user_id=user_db.id)
     db.add(new_cart)
     db.commit()
-    return {'message': 'created'}
+    return {'message': 'Account created'}
 
 # login -----------------------------------------------------------------------------------
 

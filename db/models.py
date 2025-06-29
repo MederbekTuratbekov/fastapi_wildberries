@@ -23,7 +23,7 @@ class UserProfile(Base):
     phone_number: Mapped[str | None] = mapped_column(String, nullable=True)
     password: Mapped[str] = mapped_column(String, nullable=True)
     status: Mapped[STATUS_CHOICES] = mapped_column(Enum(STATUS_CHOICES), default=STATUS_CHOICES.simple)
-    created_date: Mapped[int] = mapped_column(TIMESTAMP, default=lambda : datetime.now(timezone.utc))
+    created_date: Mapped[int] = mapped_column(DateTime, default=lambda : datetime.now(timezone.utc))
 
     owner_product: Mapped[List['Product']] = relationship('Product', back_populates='owner', cascade='all, delete-orphan')
     author_review: Mapped[List['Review']] = relationship('Review', back_populates='author', cascade='all, delete-orphan')
@@ -97,7 +97,7 @@ class Cart(Base):
 
     user_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'), unique=True)
     user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='user_cart')
-    cart_cartitem: Mapped[List['CartItem']] = relationship('CartItem', back_populates='cart', cascade='all, delete-orphan')
+    cart_item: Mapped[List['CartItem']] = relationship('CartItem', back_populates='cart', cascade='all, delete-orphan')
 
     def __str__(self):
         return f'{Cart.id}'
@@ -108,7 +108,7 @@ class CartItem(Base):
     quantity: Mapped[int] = mapped_column(Integer, default=1)
 
     cart_id: Mapped[int] = mapped_column(ForeignKey('cart.id'))
-    cart: Mapped['Cart'] = relationship('Cart', back_populates='cart_cartitem')
+    cart: Mapped['Cart'] = relationship('Cart', back_populates='cart_item')
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
     product: Mapped['Product'] = relationship('Product')
 

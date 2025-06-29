@@ -110,13 +110,14 @@ class CartItemSchema(BaseModel):
 class CartSchema(BaseModel):
     id: int
     user_id: int
-    items: List[CartItemSchema] = []
+    cart_item: List[CartItemSchema] = []
 
     class Config:
         from_attributes = True
 
 class CartCreateSchema(BaseModel):
     product_id: int
+    quantity: int = None
 
     class Config:
         from_attributes = True
