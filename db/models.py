@@ -28,7 +28,8 @@ class UserProfile(Base):
     owner_product: Mapped[List['Product']] = relationship('Product', back_populates='owner', cascade='all, delete-orphan')
     author_review: Mapped[List['Review']] = relationship('Review', back_populates='author', cascade='all, delete-orphan')
     user_token: Mapped[List['RefreshToken']] = relationship('RefreshToken', back_populates='user', cascade='all, delete-orphan')
-    user_cart: Mapped['Cart'] = relationship('Cart', back_populates='user', cascade='all, delete-orphan', uselist=True)
+    user_cart: Mapped['Cart'] = relationship('Cart', back_populates='user', cascade='all, delete-orphan', uselist=False)
+    user_favorite: Mapped['Favorite'] = relationship('Favorite', back_populates='user', cascade='all, delete-orphan', uselist=False)
 
     def __str__(self):
         return f'{UserProfile.lastname}, {UserProfile.first_name}'
@@ -93,7 +94,7 @@ class Review(Base):
 class Cart(Base):
     __tablename__ = 'cart'
     id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
-    created_date: Mapped[int] = mapped_column(TIMESTAMP, default=lambda : datetime.now(timezone.utc))
+    created_date: Mapped[datetime] = mapped_column(TIMESTAMP, default=lambda : datetime.now(timezone.utc))
 
     user_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'), unique=True)
     user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='user_cart')
@@ -114,3 +115,27 @@ class CartItem(Base):
 
     def __str__(self):
         return f'{CartItem.quantity}'
+
+class Favorite(Base):
+    __tablename__ = 'favorite'
+    id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
+    created_date: Mapped[datetime] = mapped_column(TIMESTAMP, default=lambda : datetime.now(timezone.utc))
+
+    user_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'), unique=True)
+    user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='user_favorite')
+    favorite_items: Mapped['FavoriteItem'] = relationship('FavoriteItem', back_populates='favorite', cascade='all, delete-orphan', uselist=False)
+
+    def __str__(self):
+        return f'{Favorite.created_date}'
+
+class FavoriteItem(Base):
+    __tablename__ = 'favorite_item'
+    id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
+
+    favorite_item: Mapped[int] = mapped_column(ForeignKey('favorite.id'), unique=True)
+    favorite: Mapped['Favorite'] = relationship('Favorite', back_populates='favorite_items')
+    product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
+    product: Mapped['Product'] = relationship(Product)
+
+    def __str__(self):
+        return f'{FavoriteItem.quantity}'

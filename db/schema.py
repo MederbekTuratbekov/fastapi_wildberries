@@ -110,6 +110,7 @@ class CartItemSchema(BaseModel):
 class CartSchema(BaseModel):
     id: int
     user_id: int
+    created_date: datetime
     cart_item: List[CartItemSchema] = []
 
     class Config:
@@ -118,6 +119,31 @@ class CartSchema(BaseModel):
 class CartCreateSchema(BaseModel):
     product_id: int
     quantity: int = None
+
+    class Config:
+        from_attributes = True
+
+# ----------------------------------------------------------
+
+class FavoriteItemSchema(BaseModel):
+    id: int
+    cart_id: int
+    product_id: int
+
+    class Config:
+        from_attributes = True
+
+class FavoriteSchema(BaseModel):
+    id: int
+    created_date: datetime
+    user_id: int
+    favorite_items: List[FavoriteItemSchema] = []
+
+    class Config:
+        from_attributes = True
+
+class FavoriteCreateSchema(BaseModel):
+    product_id: int
 
     class Config:
         from_attributes = True

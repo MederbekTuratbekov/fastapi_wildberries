@@ -45,10 +45,10 @@ async def cart_add(item_data: CartCreateSchema, user_id: int, db: Session = Depe
 async def cart_delete(product_id: int, user_id: int, db: Session = Depends(get_db)):
     cart = db.query(Cart).filter(Cart.user_id == user_id).first()
     if not cart:
-        raise HTTPException(status_code=404, detail='база данныхта корзинасы жок же мындай пользователь жок')
+        raise HTTPException(status_code=404, detail='база данныхта корзинасы жок')
     cart_item = db.query(CartItem).filter(CartItem.cart_id == cart.id, CartItem.product_id == product_id).first() # есть ли в конкретной корзине, определённый продукт?
     if not cart_item:
-        raise HTTPException(status_code=404, detail='Корзинада мындай продукт жок корзинада')
+        raise HTTPException(status_code=404, detail='Корзинада мындай продукт жок')
     db.delete(cart_item)
     db.commit()
     return {'message': 'Cart item deleted successfully'}
