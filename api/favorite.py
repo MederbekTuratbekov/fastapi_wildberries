@@ -22,7 +22,7 @@ async def favorite_list(user_id:int, db:Session=Depends(get_db)):
     return favorite_db
 
 @favorite_router.post('/', response_model=FavoriteCreateSchema)
-async def cart_add(item_data: FavoriteCreateSchema, user_id: int, db: Session = Depends(get_db)):
+async def favorite_add(item_data: FavoriteCreateSchema, user_id: int, db: Session = Depends(get_db)):
     favorite_db = db.query(Favorite).filter(Favorite.user_id == user_id).first() # избранный сакталуучу жай барбы?
     if not favorite_db:
         favorite_new = Favorite(user_id=user_id)
@@ -35,7 +35,7 @@ async def cart_add(item_data: FavoriteCreateSchema, user_id: int, db: Session = 
     product_item = db.query(FavoriteItem).filter(FavoriteItem.favorite_item == favorite_db.id, FavoriteItem.product_id == item_data.product_id).first() # есть ли в конкретной корзине, определённый продукт?
     if product_item:
         raise HTTPException(status_code=400, detail='Продукт уже в корзине')
-    favorite_item = FavoriteItem(favorite_id=favorite_db.id, product_id=item_data.product_id)
+    favorite_item = FavoriteItem(favorite_item=favorite_db.id, product_id=item_data.product_id)
     db.add(favorite_item)
     db.commit()
     db.refresh(favorite_item)

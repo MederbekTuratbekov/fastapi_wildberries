@@ -127,7 +127,7 @@ class CartCreateSchema(BaseModel):
 
 class FavoriteItemSchema(BaseModel):
     id: int
-    cart_id: int
+    favorite_item: int
     product_id: int
 
     class Config:
@@ -137,7 +137,7 @@ class FavoriteSchema(BaseModel):
     id: int
     created_date: datetime
     user_id: int
-    favorite_items: List[FavoriteItemSchema] = []
+    favorite_items: Optional[FavoriteItemSchema] = None
 
     class Config:
         from_attributes = True
