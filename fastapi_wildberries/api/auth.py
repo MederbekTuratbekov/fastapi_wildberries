@@ -29,9 +29,9 @@ def get_password_hash(password):
 
 @auth_router.post('/', response_model=dict)
 async def auth_register(user: UserProfileCreateSchema  = Depends(), db: Session = Depends(get_db)):
-    check_user = db.query(UserProfile).filter(UserProfile.username == user.username).first()
+    check_username = db.query(UserProfile).filter(UserProfile.username == user.username).first()
     check_email = db.query(UserProfile).filter(UserProfile.email == user.email).first()
-    if check_user:
+    if check_username:
         raise HTTPException(status_code=404, detail='User already exists')
     elif check_email:
         raise HTTPException(status_code=404, detail='Email already exists')
