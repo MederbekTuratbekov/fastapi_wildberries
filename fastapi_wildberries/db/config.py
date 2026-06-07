@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 import os
 
-
 load_dotenv()
+
 SECRET_KEY = os.getenv('SECRET_KEY')
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 1
@@ -16,4 +16,4 @@ class Settings:
     GOOGLE_KEY = os.getenv('GOOGLE_KEY')
     GOOGLE_URL = os.getenv('GOOGLE_URL')
 
-settings = Settings
+settings = Settings()

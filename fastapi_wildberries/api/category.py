@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 category_router = APIRouter(prefix='/category', tags=['Category'])
 
-async def get_db():
+def get_db():
     db = SessionLocal()
     try:
         yield db
@@ -26,28 +26,28 @@ async def category_create(category: CategorySchema, db: Session = Depends(get_db
 async def category_list(db: Session = Depends(get_db)):
     return db.query(Category).all()
 
-@category_router.get('/{category_id}/', response_model=CategorySchema)
+@category_router.get('/{category_id}', response_model=CategorySchema)
 async def category_detail(category_id: int, db: Session = Depends(get_db)):
-    category = db.query(Category).filter(Category.id == category_id).first()
-    if category is None:
+    db_category = db.query(Category).filter(Category.id == category_id).first()
+    if db_category is None:
         raise HTTPException(status_code=404, detail='Category Not Found')
-    return category
+    return db_category
 
 @category_router.put('/{category_id}', response_model=dict)
-async def category_update(category: CategorySchema, category_id: int, db: Session = Depends(get_db)):
+async def category_update(category_id: int, category: CategorySchema, db: Session = Depends(get_db)):
     db_category = db.query(Category).filter(Category.id == category_id).first()
     if db_category is None:
         raise HTTPException(status_code=404, detail='Category Not Found')
     db_category.category_name = category.category_name
     db.commit()
     db.refresh(db_category)
-    return {'message': 'Update'}
+    return {'message': 'Updated'}
 
-@category_router.delete('/{category_id}/', response_model=dict)
-async def category_detail(category_id: int, db: Session = Depends(get_db)):
+@category_router.delete('/{category_id}', response_model=dict)
+async def category_delete(category_id: int, db: Session = Depends(get_db)):
     db_category = db.query(Category).filter(Category.id == category_id).first()
     if db_category is None:
         raise HTTPException(status_code=404, detail='Category Not Found')
     db.delete(db_category)
     db.commit()
-    return {'message': 'This Category is deleted'}
+    return {'message': 'Deleted'}
