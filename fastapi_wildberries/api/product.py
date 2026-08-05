@@ -16,7 +16,7 @@ async def get_db():
 
 @product_router.post('/', response_model=ProductListSchema)
 async def product_create(product: ProductCreateSchema, db: Session = Depends(get_db)):
-    product_db = Product(**product.dict())
+    product_db = Product(**product.model_dump())
     db.add(product_db)
     db.commit()
     db.refresh(product_db)
