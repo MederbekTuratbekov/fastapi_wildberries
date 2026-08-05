@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from store_app.db.database import SessionLocal
-from store_app.db.models import Favorite, FavoriteItem, Product
-from store_app.db.schema import FavoriteSchema, FavoriteCreateSchema
+from fastapi_wildberries.db.database import SessionLocal
+from fastapi_wildberries.db.models import Favorite, FavoriteItem, Product
+from fastapi_wildberries.db.schema import FavoriteSchema, FavoriteCreateSchema
 
 favorite_router = APIRouter(prefix='/favorite', tags=['Favorite'])
 
@@ -32,12 +32,12 @@ async def favorite_add(item_data: FavoriteCreateSchema, user_id: int, db: Sessio
     if not product:
         raise HTTPException(status_code=404, detail='Продукт не найден')
     existing = db.query(FavoriteItem).filter(
-        FavoriteItem.favorite_item == favorite_db.id,
+        FavoriteItem.favorite_id == favorite_db.id,
         FavoriteItem.product_id == item_data.product_id
     ).first()
     if existing:
         raise HTTPException(status_code=400, detail='Продукт уже в избранном')
-    favorite_item = FavoriteItem(favorite_item=favorite_db.id, product_id=item_data.product_id)
+    favorite_item = FavoriteItem(favorite_id=favorite_db.id, product_id=item_data.product_id)
     db.add(favorite_item)
     db.commit()
     db.refresh(favorite_item)
@@ -49,7 +49,7 @@ async def favorite_delete(product_id: int, user_id: int, db: Session = Depends(g
     if not favorite_db:
         raise HTTPException(status_code=404, detail='Избранное не найдено')
     favorite_item = db.query(FavoriteItem).filter(
-        FavoriteItem.favorite_item == favorite_db.id,
+        FavoriteItem.favorite_id == favorite_db.id,
         FavoriteItem.product_id == product_id
     ).first()
     if not favorite_item:
