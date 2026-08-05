@@ -16,7 +16,7 @@ def get_db():
 
 @review_router.post('/', response_model=ReviewGetSchema)
 async def review_create(review: ReviewCreateSchema, db: Session = Depends(get_db)):
-    review_db = Review(**review.dict())
+    review_db = Review(**review.model_dump())
     db.add(review_db)
     db.commit()
     db.refresh(review_db)
