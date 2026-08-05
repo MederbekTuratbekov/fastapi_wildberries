@@ -4,10 +4,10 @@ from sqlalchemy.orm import Session
 from jose import jwt
 from passlib.context import CryptContext
 from datetime import timedelta, timezone, datetime
-from store_app.db.database import SessionLocal
-from store_app.db.models import UserProfile, RefreshToken, Cart
-from store_app.db.schema import UserProfileLoginSchema, UserProfileCreateSchema
-from store_app.db.config import ALGORITHM, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
+from fastapi_wildberries.db.database import SessionLocal
+from fastapi_wildberries.db.models import UserProfile, RefreshToken, Cart
+from fastapi_wildberries.db.schema import UserProfileLoginSchema, UserProfileCreateSchema
+from fastapi_wildberries.db.config import ALGORITHM, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
 
 auth_router = APIRouter(prefix='/auth', tags=['Auth'])
 
