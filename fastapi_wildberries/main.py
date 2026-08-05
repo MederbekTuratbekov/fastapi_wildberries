@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 import uvicorn
-from store_app.api import category, product, review, auth, social_auth, cart, favorite
+from fastapi_wildberries.api import category, product, review, auth, social_auth, cart, favorite
 from starlette.middleware.sessions import SessionMiddleware
-from store_app.admin.setup import setup_admin
-from store_app.db.config import SECRET_KEY
+from fastapi_wildberries.admin.setup import setup_admin
+from fastapi_wildberries.db.config import SECRET_KEY
 
 
 online_store = FastAPI()
