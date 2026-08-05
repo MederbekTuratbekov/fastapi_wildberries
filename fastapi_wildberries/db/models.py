@@ -132,7 +132,7 @@ class FavoriteItem(Base):
     __tablename__ = 'favorite_item'
     id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
 
-    favorite_item: Mapped[int] = mapped_column(ForeignKey('favorite.id'))
+    favorite_id: Mapped[int] = mapped_column(ForeignKey('favorite.id'))
     favorite: Mapped['Favorite'] = relationship('Favorite', back_populates='favorite_items')
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
     product: Mapped['Product'] = relationship('Product')
