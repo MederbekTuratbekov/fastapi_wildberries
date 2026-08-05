@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, APIRouter
-from store_app.db.models import Review
-from store_app.db.schema import ReviewGetSchema, ReviewCreateSchema
-from store_app.db.database import SessionLocal
+from fastapi_wildberries.db.models import Review
+from fastapi_wildberries.db.schema import ReviewGetSchema, ReviewCreateSchema
+from fastapi_wildberries.db.database import SessionLocal
 from typing import List
 from sqlalchemy.orm import Session
 
