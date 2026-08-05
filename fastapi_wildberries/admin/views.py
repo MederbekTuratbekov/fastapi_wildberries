@@ -1,5 +1,5 @@
 from sqladmin import ModelView
-from store_app.db.models import UserProfile, Category, Product, Review
+from fastapi_wildberries.db.models import UserProfile, Category, Product, Review
 
 
 class UserProfileAdmin(ModelView, model=UserProfile):
