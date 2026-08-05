@@ -44,7 +44,7 @@ class CategorySchema(BaseModel):
         from_attributes = True
 
 
-class ProductGreateSchema(BaseModel):
+class ProductCreateSchema(BaseModel):
     category_id: int
     product_name: str
     owner_id: int
@@ -121,7 +121,7 @@ class CartCreateSchema(BaseModel):
 
 class FavoriteItemSchema(BaseModel):
     id: int
-    favorite_item: int
+    favorite_id: int
     product_id: int
 
     class Config:
