@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, APIRouter
-from store_app.db.models import Product
-from store_app.db.schema import ProductGreateSchema, ProductListSchema
-from store_app.db.database import SessionLocal
+from fastapi_wildberries.db.models import Product
+from fastapi_wildberries.db.schema import ProductCreateSchema, ProductListSchema
+from fastapi_wildberries.db.database import SessionLocal
 from typing import List
 from sqlalchemy.orm import Session
 
@@ -15,7 +15,7 @@ async def get_db():
         db.close()
 
 @product_router.post('/', response_model=ProductListSchema)
-async def product_create(product: ProductGreateSchema, db: Session = Depends(get_db)):
+async def product_create(product: ProductCreateSchema, db: Session = Depends(get_db)):
     product_db = Product(**product.dict())
     db.add(product_db)
     db.commit()
@@ -34,7 +34,7 @@ async def product_detail(product_id: int, db: Session = Depends(get_db)):
     return product_db
 
 @product_router.put('/{product_id}', response_model=dict)
-async def product_update(product: ProductGreateSchema, product_id: int, db: Session = Depends(get_db)):
+async def product_update(product: ProductCreateSchema, product_id: int, db: Session = Depends(get_db)):
     product_db = db.query(Product).filter(Product.id == product_id).first()
     if not product_db:
         raise HTTPException(status_code=404, detail='Product Not Found')
